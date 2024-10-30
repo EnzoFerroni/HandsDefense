@@ -94,17 +94,16 @@ class MENU():
                 elif event.key == pygame.K_RIGHT and self.selected_index == 1:
                         # Mudar dificuldade para a direita
                     self.difficulty_index = (self.difficulty_index + 1) % len(self.difficulties)
-                    self.selected_difficulty = dificuldade_global = self.difficulties[self.difficulty_index]
+                    self.selected_difficulty = self.difficulties[self.difficulty_index]
                 elif event.key == pygame.K_LEFT and self.selected_index == 1:
                         # Mudar dificuldade para a esquerda
                     self.difficulty_index = (self.difficulty_index - 1) % len(self.difficulties)
-                    self.selected_difficulty = dificuldade_global = self.difficulties[self.difficulty_index]
+                    self.selected_difficulty = self.difficulties[self.difficulty_index]
                 elif event.key == pygame.K_RETURN:
                     if self.selected_index == 0:
                             # Iniciar o jogo
                         print(f"Iniciando jogo na dificuldade {self.selected_difficulty}...")
                         self.estadoMenu = "JOGO"
-                        dificuldade_global = self.selected_difficulty
                     elif self.selected_index == 2:
                             # Sair do jogo
                         pygame.quit()
@@ -117,25 +116,8 @@ class MENU():
 class Palavras():
     def __init__(self):
         super(Palavras, self).__init__()
-        if dificuldade_global == "Difícil":
-            self.lista_palavras = {"difilicissimo": "difilicissimo"}
-        elif dificuldade_global == "Normal":
-            self.lista_palavras = {"normal": "normal"}
-        elif dificuldade_global == "Fácil":
-            self.lista_palavras = {"ez": "ez"}
-        else:
-            self.lista_palavras = {"comece": "comece"}
+        self.lista_palavras = {"libras": "libras", "palavras":"palavras", "fortnite":"fortnite", "apple":"apple", "mackenzie":"mackenzie"}
         self.palavra = random.choice(list(self.lista_palavras.items()))
-
-    def convertor(self):
-        tempdic = {}
-        letras = "abcdefghijklmnopqrstuvwxyz"
-        for chave, value in self.lista_palavras:
-            tword = ""
-            for letter in chave:
-                index = letras.index(letter)
-                tword += str(index)
-            tempdic.update({tword: value})
         
 
         
@@ -238,8 +220,7 @@ class gerenciadorPalavras():
 
 
 
-menu = MENU()
-dificuldade_global = "NULO"
+
 
 
 
@@ -250,13 +231,12 @@ player = Mago()
 general_sprite_group = pygame.sprite.Group()
 general_sprite_group.add(player)
 enemy_sprite_group = pygame.sprite.Group()
-#enemyStart = Enemy1()
-#enemy_sprite_group.add(enemyStart)
+eteste = Enemy1()
+enemy_sprite_group.add(eteste)
 getPalavra = gerenciadorPalavras()
 clock = pygame.time.Clock()
 spawnTime = 0
-spawnEspera = random.randint(3000, 5000)
-inimigo_frente = None
+spawnEspera = random.randint(2000, 5000)
 
 
 
@@ -266,6 +246,8 @@ inimigo_frente = None
 
 
 
+
+menu = MENU()
 
 
 
@@ -280,13 +262,11 @@ inimigo_frente = None
 while running:
     #clock.tick(60)
     if tela == "JOGO":
-        dificuldade_global = menu.selected_difficulty
         screen.fill((234, 189, 130))
         getPalavra.draw_text()
         if len(enemy_sprite_group.sprites()) > 0:
             inimigo_frente = enemy_sprite_group.sprites()[0]
-        if inimigo_frente:
-            getPalavra.palavraAlvo = inimigo_frente.getText()
+        getPalavra.palavraAlvo = inimigo_frente.getText()
 
 
         if pygame.time.get_ticks() - spawnTime >= spawnEspera:
