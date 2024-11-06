@@ -83,7 +83,7 @@ def pause():
                 elif event.key == pygame.K_RETURN:
                     if selected_index == 0:
                         return
-                    if selected_index == 1:
+                    elif selected_index == 1:
                         libra()
                     elif selected_index == 2:
                         pygame.quit()
